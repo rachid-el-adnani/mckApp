@@ -1,0 +1,380 @@
+@import "tailwindcss";
+
+@theme {
+  --color-atlas: #c42a2d;
+  --color-atlas-dark: #97181b;
+  --color-atlas-light: #e44a4d;
+  --color-cream: #f4ede0;
+  --color-cream-100: #faf5ec;
+  --color-cream-200: #ede4d2;
+  --color-navy: #0e1a2b;
+  --color-navy-light: #1c2b40;
+  --color-ochre: #e0b354;
+  --color-sand: #e3bea4;
+  --color-ink: #0e1a2b;
+  --color-muted: #5c6470;
+  --color-line: rgba(14, 26, 43, 0.08);
+
+  /* Semantic role tokens — these re-point under [data-theme="dark"].
+     Components that switch with the theme should use these. */
+  --color-bg: #f4ede0;            /* cream — page background */
+  --color-bg-alt: #faf5ec;        /* cream-100 — alt bg / cards on cream */
+  --color-bg-deep: #ede4d2;       /* cream-200 — deeper bg (Sponsors) */
+  --color-card: #ffffff;          /* white — card surface inside cream sections */
+  --color-text: #0e1a2b;          /* ink — primary text on light bg */
+  --color-text-muted: #5c6470;    /* muted — secondary text */
+  --color-text-strong: #0e1a2b;   /* ink — borders that read as ink */
+  --color-border: rgba(14, 26, 43, 0.08);
+
+  --font-display: var(--font-bebas), "Bebas Neue", system-ui, sans-serif;
+  --font-body: var(--font-inter), Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-paint: var(--font-knewave), "Knewave", "Bebas Neue", system-ui, sans-serif;
+
+  --shadow-card: 0 1px 2px rgba(14, 26, 43, 0.04), 0 8px 24px rgba(14, 26, 43, 0.08);
+  --shadow-lift: 0 10px 30px rgba(14, 26, 43, 0.18);
+}
+
+/* Dark theme — flip the semantic role tokens only.
+   Brand colors (atlas, ochre, sand) and "always dark" tokens (navy, cream as on-dark text) stay constant. */
+:root[data-theme="dark"] {
+  --color-bg: #0e1a2b;
+  --color-bg-alt: #152339;
+  --color-bg-deep: #1c2b40;
+  --color-card: #182740;
+  --color-text: #f4ede0;
+  --color-text-muted: rgba(244, 237, 224, 0.6);
+  --color-text-strong: #f4ede0;
+  --color-border: rgba(244, 237, 224, 0.12);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-lift: 0 10px 30px rgba(0, 0, 0, 0.55);
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-text);
+    transition: background-color 200ms ease, color 200ms ease;
+    font-family: var(--font-body);
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-atlas);
+    color: var(--color-cream);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: 0.01em;
+    line-height: 0.95;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes marquee-reverse {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.5; }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-slow {
+  animation: marquee 60s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-reverse {
+  animation: marquee-reverse 45s linear infinite;
+  will-change: transform;
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 1.6s ease-in-out infinite;
+}
+
+@utility container-page {
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .container-page {
+    padding-inline: 2rem;
+  }
+}
+
+@utility section-pad {
+  padding-block: 5rem;
+}
+
+@media (min-width: 768px) {
+  .section-pad {
+    padding-block: 7rem;
+  }
+}
+
+@utility eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-atlas);
+}
+
+.zellige-bg {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(14, 26, 43, 0.08) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+.zellige-strong {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(244, 237, 224, 0.12) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+.text-stroke-cream {
+  -webkit-text-stroke: 1px var(--color-cream);
+  color: transparent;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  background: var(--color-atlas);
+  color: var(--color-cream);
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  transition: transform 200ms ease, background 200ms ease, box-shadow 200ms ease;
+  box-shadow: var(--shadow-card);
+}
+.btn-primary:hover {
+  background: var(--color-atlas-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lift);
+}
+.btn-primary:focus-visible {
+  outline: 2px solid var(--color-ochre);
+  outline-offset: 3px;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.5rem;
+  background: transparent;
+  color: var(--color-cream);
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  border: 1.5px solid rgba(244, 237, 224, 0.5);
+  transition: background 200ms ease, border-color 200ms ease;
+}
+.btn-secondary:hover {
+  background: rgba(244, 237, 224, 0.1);
+  border-color: var(--color-cream);
+}
+.btn-secondary:focus-visible {
+  outline: 2px solid var(--color-ochre);
+  outline-offset: 3px;
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: transparent;
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  border: 1.5px solid var(--color-text);
+  transition: background 200ms ease, color 200ms ease;
+}
+.btn-ghost:hover {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+.btn-ghost:focus-visible {
+  outline: 2px solid var(--color-atlas);
+  outline-offset: 3px;
+}
+
+/* Poster + scoreboard primitives */
+
+.section-number {
+  font-family: var(--font-display);
+  font-size: clamp(7rem, 14vw, 14rem);
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--color-atlas);
+  user-select: none;
+  pointer-events: none;
+  text-transform: uppercase;
+}
+
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.section-tag::before {
+  content: "";
+  width: 1.5rem;
+  height: 2px;
+  background: var(--color-atlas);
+}
+
+.tape-strip {
+  background: repeating-linear-gradient(
+    -8deg,
+    var(--color-atlas) 0 16px,
+    var(--color-atlas-dark) 16px 32px
+  );
+}
+
+.sticker {
+  box-shadow:
+    -4px 4px 0 var(--color-atlas),
+    -8px 8px 0 var(--color-navy);
+}
+
+.sticker-cream {
+  box-shadow:
+    -4px 4px 0 var(--color-atlas),
+    -8px 8px 0 var(--color-cream-200);
+}
+
+.text-stroke-atlas {
+  -webkit-text-stroke: 2px var(--color-atlas);
+  color: transparent;
+}
+
+.text-stroke-ink {
+  -webkit-text-stroke: 1.5px var(--color-ink);
+  color: transparent;
+}
+
+.scanlines {
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.04) 0,
+    rgba(255, 255, 255, 0.04) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+.field-underline {
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid var(--color-cream)/20;
+  border-radius: 0;
+  padding: 0.75rem 0;
+  font-family: var(--font-mono);
+  letter-spacing: 0.05em;
+}
+
+/* Stitched / dashed jersey-patch border */
+.patch-border {
+  border: 2px dashed var(--color-atlas);
+  border-radius: 0.25rem;
+}
+
+/* Dark-mode spot-fixes — give always-navy sections a subtle break
+   against adjacent dark page backgrounds. */
+:root[data-theme="dark"] #register,
+:root[data-theme="dark"] footer {
+  border-top: 1px solid rgba(244, 237, 224, 0.06);
+}
+
+/* Tape on champion cards is a paper artifact — fade it in dark mode so it
+   reads as a tape strip on a dark card rather than a glow. */
+:root[data-theme="dark"] .tape-corner::before,
+:root[data-theme="dark"] .tape-corner::after {
+  background: rgba(244, 237, 224, 0.18);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Tape-corner pseudo for trading cards */
+.tape-corner {
+  position: relative;
+}
+.tape-corner::before,
+.tape-corner::after {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 18px;
+  background: rgba(244, 237, 224, 0.85);
+  box-shadow: 0 1px 3px rgba(14, 26, 43, 0.2);
+  pointer-events: none;
+}
+.tape-corner::before {
+  top: -8px;
+  left: -14px;
+  transform: rotate(-12deg);
+}
+.tape-corner::after {
+  top: -8px;
+  right: -14px;
+  transform: rotate(10deg);
+}
